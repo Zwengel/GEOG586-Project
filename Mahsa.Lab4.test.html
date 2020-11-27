@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+   
+   <style>
+.mapid { height: 600px;width:1000px; margin: auto; }
+
+
+body {
+  background-color: lightgreen;
+}
+
+pre {border-style: double;}
+
+
+h1 {
+  text-align: center;
+}
+h1 {color:black; font-size:40px;
+}
+
+ 
+ h2 {
+  text-align: left-side;
+}
+h2 {color:black; font-size:20px;
+} 
+  
+  
+  
+
+pre {
+  font-size: 20px;
+}
+
+   
+   </style>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   </head>
+   
+
+   
+   
+  <body>
+  
+  
+  <h1>Calgary Cirme Maps</h1>
+  <br>
+  <hr>
+<h2>GEOG586-Final Project <br> Mahsa, Alex, Valery</h2>
+
+
+<button onclick="window.print()">Print this page</button>
+
+
+<p id="datetimeText"></p>
+
+         <script>
+var d = new Date();
+document.getElementById("datetimeText").innerHTML = d;
+         </script>
+
+
+
+  <p id="datetimeText"></p>
+  
+  <button onclick="showmap(1)">show map 1</button>
+  <button onclick="showmap(2)">show map 2</button>
+  <button onclick="showmap(3)">show map 3</button>
+  <div class="mapid" id="mapid"></div>
+  <div class="mapid" id="mapid2"></div>
+  <div class="mapid" id="mapid3"></div>
+  
+  
+  <script>
+  var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
+  
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
+}).addTo(mymap);	
+
+
+//map 2
+
+  var mymap2 = L.map('mapid2').setView([51.033838, -114.059372], 13);
+  
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
+}).addTo(mymap2);
+
+	
+
+//map 3
+
+  var mymap3 = L.map('mapid3').setView([51.033838, -114.059372], 13);
+  
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
+}).addTo(mymap3);
+
+
+
+
+//show and hide maps
+function showmap(mapNum) {
+    if (mapNum == 1) {
+        document.getElementById("mapid").style.display = "block";
+		document.getElementById("mapid2").style.display = "none";
+		document.getElementById("mapid3").style.display = "none";
+    }
+	
+	if (mapNum == 2) {
+        document.getElementById("mapid").style.display = "none";
+		document.getElementById("mapid2").style.display = "block";
+		document.getElementById("mapid3").style.display = "none";
+    }
+	
+	if (mapNum == 3) {
+        document.getElementById("mapid").style.display = "none";
+		document.getElementById("mapid2").style.display = "none";
+		document.getElementById("mapid3").style.display = "block";
+    }
+	
+};
+
+showmap(1);
+
+</script>
+  
+  
+  
+  
+  
+  
+  
+  
+  </body>
+  
+  
+  
+  </html>
