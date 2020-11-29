@@ -12,6 +12,9 @@
    
 <script src="lrt_stations.js"></script>
 <script src="lrt_tracks.js"></script>
+<script src="Community Boundaries.js"></script>
+<script src="S19.js"></script>
+
    
 <style>
 .mapid {
@@ -83,9 +86,13 @@ document.getElementById("datetimeText").innerHTML = d;
   
   <script>
   
-  function bindPopups(feature, layer) {
+  function bindPopupsLRT(feature, layer) {
 				layer.bindPopup("<h3>"+feature.properties.STATIONNAM+"</h3>");
 		};
+		
+	function bindPopupsComms(feature, layer) {
+		layer.bindPopup(feature.properties.name);
+	}
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
   
@@ -99,8 +106,10 @@ document.getElementById("datetimeText").innerHTML = d;
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap);	
 
-	L.geoJSON(lrt_stations, {onEachFeature: bindPopups}).addTo(mymap);
+	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
 	L.geoJSON(lrt_tracks).addTo(mymap);
+	L.geoJSON(commBounds, {onEachFeature: bindPopupsComms}).addTo(mymap);
+	
 //map 2
 
   var mymap2 = L.map('mapid2').setView([51.033838, -114.059372], 13);
