@@ -12,8 +12,7 @@
    
 <script src="lrt_stations.js"></script>
 <script src="lrt_tracks.js"></script>
-<script src="Community Boundaries.js"></script>
-<script src="S19.js"></script>
+<script src="crimesByCommunityS19.js"></script>
 
    
 <style>
@@ -91,7 +90,7 @@ document.getElementById("datetimeText").innerHTML = d;
 		};
 		
 	function bindPopupsComms(feature, layer) {
-		layer.bindPopup(feature.properties.name);
+		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
 	}
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
@@ -108,7 +107,7 @@ document.getElementById("datetimeText").innerHTML = d;
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
 	L.geoJSON(lrt_tracks).addTo(mymap);
-	L.geoJSON(commBounds, {onEachFeature: bindPopupsComms}).addTo(mymap);
+	L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
 	
 //map 2
 
