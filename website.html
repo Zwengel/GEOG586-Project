@@ -216,18 +216,28 @@ function showmap(mapNum) {
         document.getElementById("mapid").style.display = "block";
 		document.getElementById("mapid2").style.display = "none";
 		document.getElementById("mapid3").style.display = "none";
+        document.getElementById("mapid4").style.display = "none";
     }
 	
 	if (mapNum == 2) {
         document.getElementById("mapid").style.display = "none";
 		document.getElementById("mapid2").style.display = "block";
 		document.getElementById("mapid3").style.display = "none";
+        document.getElementById("mapid4").style.display = "none";
     }
 	
 	if (mapNum == 3) {
         document.getElementById("mapid").style.display = "none";
 		document.getElementById("mapid2").style.display = "none";
 		document.getElementById("mapid3").style.display = "block";
+        document.getElementById("mapid4").style.display = "none";
+    }
+    
+    if (mapNum == 4) {
+        document.getElementById("mapid").style.display = "none";
+		document.getElementById("mapid2").style.display = "none";
+		document.getElementById("mapid3").style.display = "none";
+        document.getElementById("mapid4").style.display = "block";
     }
 	
 };
