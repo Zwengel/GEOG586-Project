@@ -34,12 +34,7 @@
 </ol>      
 
 
-<p id="datetimeText"></p>
 
-         <script>
-var d = new Date();
-document.getElementById("datetimeText").innerHTML = d;
-         </script>
 
 
 
@@ -74,12 +69,37 @@ document.getElementById("datetimeText").innerHTML = d;
     tileSize: 512,
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
-}).addTo(mymap);	
+  }).addTo(mymap);	
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
 	L.geoJSON(lrt_tracks).addTo(mymap);
 	L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
-	
+      
+    function getColor(d) {
+    return d > 400 ? '#800026' :
+           d > 100? '#BD0026' :
+           d > 80  ? '#E31A1C' :
+           d > 60  ? '#FC4E2A' :
+           d > 40  ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+                      '#FFEDA0';
+        }  
+      
+      function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.totalCrime),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+        };
+      }
+
+      L.geoJson(s19, {style: style}).addTo(mymap);
+      
+ 
+      
 //map 2
 
   var mymap2 = L.map('mapid2').setView([51.033838, -114.059372], 13);
@@ -93,6 +113,9 @@ document.getElementById("datetimeText").innerHTML = d;
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap2);
+      
+      L.geoJSON(lrt_tracks).addTo(mymap2);
+      L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap2);
 
 	
 
@@ -109,6 +132,8 @@ document.getElementById("datetimeText").innerHTML = d;
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap3);
+      L.geoJSON(lrt_tracks).addTo(mymap3);
+      L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap3);
 
 
 //show and hide maps
