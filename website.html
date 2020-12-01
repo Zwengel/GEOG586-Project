@@ -25,7 +25,7 @@
   <h1>Calgary Crime Maps</h1>
   <br>
   <hr>
-<h2 class="sign">GEOG586-Final Project <br> Mahsa, Alex, Valery</h2>
+<h2 class="sign">GEOG586-Final Project <br> Alex, Valery, Mahsa</h2>
       
 <ol>
     <li class = "button"> DEFINITIONS </li>
@@ -40,9 +40,9 @@
     <a class="button button1"href="https://www.calgary.ca/cps.html" target="_blank">CALGARY POLICE SERVICES WEBSITE</a>
       </div>
   
-  <button onclick="showmap(1)">Summer 2019</button>
-  <button onclick="showmap(2)">show map 2</button>
-  <button onclick="showmap(3)">show map 3</button>
+  <button class="button" onclick="showmap(1)">Summer 2019</button>
+  <button class="button" onclick="showmap(2)">show map 2</button>
+  <button class="button" onclick="showmap(3)">show map 3</button>
     
   <div class="mapid" id="mapid"></div>
   <div class="mapid" id="mapid2"></div>
@@ -72,8 +72,27 @@
   }).addTo(mymap);	
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
-	L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
+    L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
     L.geoJSON(lrt_tracks).addTo(mymap);
+      
+//info
+      	var info = L.control();
+
+	info.onAdd = function (mymap) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+
+	info.update = function (props) {
+		this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+			: 'Hover over a state');
+	};
+
+	info.addTo(mymap);
+
+      //colours in chloropleth
       
     function getColor(d) {
     return d > 400 ? '#800026' :
@@ -98,25 +117,7 @@
 
       L.geoJson(s19, {style: style}).addTo(mymap);
       
-      //map information on corner 
-      
-      var info = L.control(); 
-
-        info.onAdd = function (mymap) {
-            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-            this.update();
-            return this._div;
-        };
-
-        // method that we will use to update the control based on feature properties passed
-        info.update = function (props) {
-            this._div.innerHTML = '<h4>Calgary Crime Statistics</h4>' +  (props ?
-                '<b>' + props.name + '</b><br />' + props.totalCrime + ' people / mi<sup>2</sup>'
-                : 'Hover over a community');
-        };
-
-        info.addTo(mymap);
-      
+     
       //interactions with hover 
       
       
@@ -128,7 +129,7 @@
 
             var div = L.DomUtil.create('div', 'info legend'),
                 grades = [0, 20, 40, 60, 80, 100, 400],
-                labels = [];
+                labels = [0, 20, 40, 60, 80, 100, 400];
 
             for (var i = 0; i < grades.length; i++) {
                 div.innerHTML +=
