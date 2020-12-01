@@ -32,13 +32,13 @@
     <li class = "button"> MAPS</li>
       
 </ol>      
-
-
-
-
-
-
-  <p id="datetimeText"></p>
+<div class="definitions">
+    
+    <h4> Crime </h4>
+    <h5> Defined <br> The crime count is based on the most serious violation per incident method that the City of Calgary Police uses.</h5>
+      
+    <a class="button button1"href="https://www.calgary.ca/cps.html" target="_blank">CALGARY POLICE SERVICES WEBSITE</a>
+      </div>
   
   <button onclick="showmap(1)">Summer 2019</button>
   <button onclick="showmap(2)">show map 2</button>
@@ -48,16 +48,20 @@
   <div class="mapid" id="mapid2"></div>
   <div class="mapid" id="mapid3"></div>
   
-  
+  <div class="info" id="funfacts"> 
+      <script>
+      function bindPopupsComms(feature, layer) {
+		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
+	}
+          </script>
+                                </div>
+      
   <script>
   
   function bindPopupsLRT(feature, layer) {
 				layer.bindPopup("<h3>"+feature.properties.STATIONNAM+"</h3>");
 		};
 		
-	function bindPopupsComms(feature, layer) {
-		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
-	}
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
   
@@ -72,8 +76,8 @@
   }).addTo(mymap);	
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
-	L.geoJSON(lrt_tracks).addTo(mymap);
 	L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
+    L.geoJSON(lrt_tracks).addTo(mymap);
       
     function getColor(d) {
     return d > 400 ? '#800026' :
@@ -98,6 +102,44 @@
 
       L.geoJson(s19, {style: style}).addTo(mymap);
       
+      var info = L.control(); //map information on corner 
+
+        info.onAdd = function (mymap) {
+            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+            this.update();
+            return this._div;
+        };
+
+        // method that we will use to update the control based on feature properties passed
+        info.update = function (props) {
+            this._div.innerHTML = '<h4>Calgary Crime Statistics</h4>' +  (props ?
+                '<b>' + props.name + '</b><br />' + props.totalCrime + ' people / mi<sup>2</sup>'
+                : 'Hover over a community');
+        };
+
+        info.addTo(mymap);
+      
+      
+      //map 1 legend
+      var legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (mymap) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                grades = [0, 20, 40, 60, 80, 100, 400],
+                labels = [];
+
+            for (var i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+             
+            }
+
+            return div;
+        };
+
+        legend.addTo(mymap);
  
       
 //map 2
