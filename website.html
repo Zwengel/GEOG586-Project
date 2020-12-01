@@ -47,20 +47,16 @@
   <div class="mapid" id="mapid"></div>
   <div class="mapid" id="mapid2"></div>
   <div class="mapid" id="mapid3"></div>
-  
-  <div class="info" id="funfacts"> 
-      <script>
-      function bindPopupsComms(feature, layer) {
-		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
-	}
-          </script>
-                                </div>
       
   <script>
   
   function bindPopupsLRT(feature, layer) {
 				layer.bindPopup("<h3>"+feature.properties.STATIONNAM+"</h3>");
 		};
+      
+       function bindPopupsComms(feature, layer) {
+		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
+	}
 		
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
@@ -102,7 +98,9 @@
 
       L.geoJson(s19, {style: style}).addTo(mymap);
       
-      var info = L.control(); //map information on corner 
+      //map information on corner 
+      
+      var info = L.control(); 
 
         info.onAdd = function (mymap) {
             this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -118,6 +116,9 @@
         };
 
         info.addTo(mymap);
+      
+      //interactions with hover 
+      
       
       
       //map 1 legend
