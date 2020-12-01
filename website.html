@@ -9,45 +9,12 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
    crossorigin=""></script>
+    
+ <link rel="stylesheet" type="text/css" href="FinalProj.css" media="screen"/>
    
 <script src="lrt_stations.js"></script>
 <script src="lrt_tracks.js"></script>
 <script src="crimesByCommunityS19.js"></script>
-
-   
-<style>
-.mapid {
-	height: 600px; width:1000px;
-	margin: auto;
-}
-
-body {
-	background-color: lightgreen;
-}
-
-pre {
-	border-style: double;
-	font-size: 20px;
-}
-
-h1 {
-	text-align: center;
-	color:black;
-	font-size:40px;
-}
- 
-h2 {
-	text-align: left-side;
-	color:black; font-size:20px;
-}
-
-h3 {
-	text-align: center;
-	font-size: 16px;
-}
-   
-   </style>  
-
 
    </head>
    
@@ -58,10 +25,13 @@ h3 {
   <h1>Calgary Crime Maps</h1>
   <br>
   <hr>
-<h2>GEOG586-Final Project <br> Mahsa, Alex, Valery</h2>
-
-
-<button onclick="window.print()">Print this page</button>
+<h2 class="sign">GEOG586-Final Project <br> Mahsa, Alex, Valery</h2>
+      
+<ol>
+    <li class = "button"> DEFINITIONS </li>
+    <li class = "button"> MAPS</li>
+      
+</ol>      
 
 
 <p id="datetimeText"></p>
@@ -78,6 +48,7 @@ document.getElementById("datetimeText").innerHTML = d;
   <button onclick="showmap(1)">Summer 2019</button>
   <button onclick="showmap(2)">show map 2</button>
   <button onclick="showmap(3)">show map 3</button>
+    
   <div class="mapid" id="mapid"></div>
   <div class="mapid" id="mapid2"></div>
   <div class="mapid" id="mapid3"></div>
