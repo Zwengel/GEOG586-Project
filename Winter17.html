@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+    
+ <link rel="stylesheet" type="text/css" href="FinalProj.css" media="screen"/>
+<script src="lrt_stations.js"></script>
+<script src="lrt_tracks.js"></script>
+<script src="crimesByCommunityW17.js"></script>
+<script src="website.html"></script>
+    
+    </head>
+    <body>
+     <div class="mapid4" id="mapid4" style="height: 100%; width: 100%;"></div>
+        <script>
+  
+  function bindPopupsLRT(feature, layer) {
+				layer.bindPopup("<h4>"+feature.properties.STATIONNAM+"</h4>");
+		};
+      	
+		
+  var mymap4 = L.map('mapid4').setView([51.033838, -114.059372], 13);
+  
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
+  }).addTo(mymap4);	
+
+	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap4);
+    L.geoJSON(lrt_tracks).addTo(mymap4);
+      
+//Chloropleth
+      
+    function getColor(d) {
+    return d > 400 ? '#edf8fb' :
+           d > 100? '#bfd3e6' :
+           d > 80  ? '#9ebcda' :
+           d > 60  ? '#8c96c6' :
+           d > 40  ? '#8c6bb1' :
+           d > 20   ? '#88419d' :
+                      '#6e016b';
+        }  
+            
+            
+      function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.totalCrime),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+        };
+      }
+
+    L.geoJson(w17, {style: style}).addTo(mymap4);
+      
+   //hightlight features 
+     function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+        
+    
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+          info.update(layer.feature.properties);
+}
+      
+      function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+           info.update();
+}
+      
+      function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+    });
+}
+
+geojson = L.geoJson(w17, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(mymap4);
+      
+      //info control 
+      
+      var info = L.control();
+
+info.onAdd = function (mymap4) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Calgary Crime Data</h4>' +  (props ?
+        '<b>' + props.name + '</b><br/>' + 'Grand Theft Autos: ' + props.theftOfVehicle + '</b><br/>' + 'Theft from vehicle: ' + props.theftFromVehicle + '</b><br/>' + 'Assault: ' + props.assault+ '</b><br/>' + 'Street Robbery: '+props.streetRobbery + '</b><br/>'+'Commercial Robbery: '+ props.commercialRobbery+'</b><br/>' + 'Violence: ' + props.violenceOther + '</b><br/>' + 'Break & Enter (Dwelling): '+ props.bneDwelling + '</b><br/>' + 'Break & Enter (Commercial): ' + props.bneCommercial + '</b><br/>' + 'Break & Enter (Other): '+props.bneOther+'</b><br/>' + 'Total Crime: ' + props.totalCrime
+        : 'Hover over a community');
+};
+      
+
+info.addTo(mymap4);
+      
+      //map 1 legend
+      var legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function (mymap4) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                grades = [0, 20, 40, 60, 80, 100, 400],
+                labels = [];
+
+            for (var i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+             
+            }
+
+            return div;
+        };
+
+        legend.addTo(mymap4);
+     
+ 
+        </script>
+    </body>
+</html>

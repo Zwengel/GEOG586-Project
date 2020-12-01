@@ -14,6 +14,7 @@
    
 <script src="lrt_stations.js"></script>
 <script src="lrt_tracks.js"></script>
+<script src="CommunityBoundaries.js"></script>
 <script src="crimesByCommunityS19.js"></script>
 <script src="crimesByCommunityW19.js"></script>
 <script src="crimesByCommunityW17.js"></script>
@@ -31,7 +32,7 @@
 <h2 class="sign">GEOG586-Final Project <br> Alex, Valery, Mahsa</h2>
       
 
- <li class = "button"><a href="#mapid"> MAPS</a></li>
+ <li class = "button"><a href="#mapid"> Calgary Communities </a></li>
  
 <div class="background ">
     <h3> DATASET - Calgary Police Services (CPS) Community Crime and Disorder Statistics dataset.
@@ -55,27 +56,25 @@
         <br>
    Learn more about CPS and their datasets on their website! <br>
     <a class="button button1"href="https://www.calgary.ca/cps.html" target="_blank">CALGARY POLICE SERVICES WEBSITE</a></h3>  
-      </div>
+   
   
   
-  <button class="button" onclick="showmap(1)">Summer 2019</button>
+  <button class="button" href="https://www.calgary.ca/cps.html" target="_blank">Summer 2019</button>
   <button class="button" onclick="showmap(2)">Winter 2019</button>
   <button class="button" onclick="showmap(3)">Summer 2017</button>
  <button class="button" onclick="showmap(4)">Winter 2017</button>
     
-  <div class="mapid" id="mapid"></div>
-  <div class="mapid" id="mapid2"></div>
-  <div class="mapid" id="mapid3"></div>
-  <div class="mapid" id="mapid4"></div> 
+   </div>
       
   <script>
   
   function bindPopupsLRT(feature, layer) {
-				layer.bindPopup("<h3>"+feature.properties.STATIONNAM+"</h3>");
+				layer.bindPopup("<h4>"+feature.properties.STATIONNAM+"</h4>");
 		};
+      </script>
       
-		
-		
+<div class="mapid" id="mapid"></div>
+      <script>
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
   
   
@@ -90,198 +89,8 @@
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
     L.geoJSON(lrt_tracks).addTo(mymap);
+    L.geoJSON(CommunityBoundaries).addTo(mymap);
       
-
-      
-    function getColor(d) {
-    return d > 400 ? '#800026' :
-           d > 100? '#BD0026' :
-           d > 80  ? '#E31A1C' :
-           d > 60  ? '#FC4E2A' :
-           d > 40  ? '#FD8D3C' :
-           d > 20   ? '#FEB24C' :
-                      '#FFEDA0';
-        }  
-      
-      function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.totalCrime),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-        };
-      }
-
-    L.geoJson(s19, {style: style}).addTo(mymap);
-      
-   //hightlight features 
-     function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-        
-    
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-          info.update(layer.feature.properties);
-}
-      
-      function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-           info.update();
-}
-      
-      function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight
-    });
-}
-
-geojson = L.geoJson(s19, {
-    style: style,
-    onEachFeature: onEachFeature
-}).addTo(mymap);
-      
-      //info control 
-      
-      var info = L.control();
-
-info.onAdd = function (mymap) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
-
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Calgary Crime Data</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + ' Total Crime: '+ props.totalCrime
-        : 'Hover over a community');
-};
-
-info.addTo(mymap);
-      
-      //map 1 legend
-      var legend = L.control({position: 'bottomright'});
-
-        legend.onAdd = function (mymap) {
-
-            var div = L.DomUtil.create('div', 'info legend'),
-                grades = [0, 20, 40, 60, 80, 100, 400],
-                labels = [0, 20, 40, 60, 80, 100, 400];
-
-            for (var i = 0; i < grades.length; i++) {
-                div.innerHTML +=
-                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-             
-            }
-
-            return div;
-        };
-
-        legend.addTo(mymap);
- 
-      
-//map 2
-
-  var mymap2 = L.map('mapid2').setView([51.033838, -114.059372], 13);
-  
-  
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
-}).addTo(mymap2);
-      
-	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap2);
-    L.geoJSON(lrt_tracks).addTo(mymap2);
-
-	
-
-//map 3
-
-  var mymap3 = L.map('mapid3').setView([51.033838, -114.059372], 13);
-  
-  
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
-}).addTo(mymap3);
-      L.geoJSON(lrt_tracks).addTo(mymap3);
-    L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap3);
-      
-
-//map 4 
-
- var mymap4 = L.map('mapid4').setView([51.033838, -114.059372], 13);
-  
-  
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
-}).addTo(mymap4);
-
-    L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap4);
-    L.geoJSON(lrt_tracks).addTo(mymap4);
-    
-      
-
-//show and hide maps
-function showmap(mapNum) {
-    if (mapNum == 1) {
-        document.getElementById("mapid").style.display = "block";
-		document.getElementById("mapid2").style.display = "none";
-		document.getElementById("mapid3").style.display = "none";
-        document.getElementById("mapid4").style.display = "none";
-    }
-	
-	if (mapNum == 2) {
-        document.getElementById("mapid").style.display = "none";
-		document.getElementById("mapid2").style.display = "block";
-		document.getElementById("mapid3").style.display = "none";
-        document.getElementById("mapid4").style.display = "none";
-    }
-	
-	if (mapNum == 3) {
-        document.getElementById("mapid").style.display = "none";
-		document.getElementById("mapid2").style.display = "none";
-		document.getElementById("mapid3").style.display = "block";
-        document.getElementById("mapid4").style.display = "none";
-    }
-    
-    if (mapNum == 4) {
-        document.getElementById("mapid").style.display = "none";
-		document.getElementById("mapid2").style.display = "none";
-		document.getElementById("mapid3").style.display = "none";
-        document.getElementById("mapid4").style.display = "block";
-    }
-	
-};
-
-showmap(1);
-
 </script>
   
   

@@ -5,6 +5,21 @@ body {background-image: url(greyback.jpg);}
 	margin: auto;
     border-radius: 10px;
     }
+.mapid2 {
+	height: 600px; width:1000px;
+	margin: auto;
+    border-radius: 10px;
+    }
+.mapid3 {
+	height: 600px; width:1000px;
+	margin: auto;
+    border-radius: 10px;
+    }
+.mapid4 {
+	height: 600px; width:1000px;
+	margin: auto;
+    border-radius: 10px;
+    }
 
 body {
 	background-color: lightgreen;
@@ -53,6 +68,7 @@ h3 {color: whitesmoke;
         font-size: 17px;
         border: none;
         position: relative;
+        align-self: center ;
         padding: 5px 15px;
         color: black;
         background-color: #E7EDF3;
