@@ -15,6 +15,9 @@
 <script src="lrt_stations.js"></script>
 <script src="lrt_tracks.js"></script>
 <script src="crimesByCommunityS19.js"></script>
+<script src="crimesByCommunityW19.js"></script>
+<script src="crimesByCommunityW17.js"></script>
+<script src="crimesByCommunityS17.js"></script>
 
    </head>
    
@@ -41,12 +44,14 @@
       </div>
   
   <button class="button" onclick="showmap(1)">Summer 2019</button>
-  <button class="button" onclick="showmap(2)">show map 2</button>
-  <button class="button" onclick="showmap(3)">show map 3</button>
+  <button class="button" onclick="showmap(2)">Winter 2019</button>
+  <button class="button" onclick="showmap(3)">Summer 2017</button>
+    <button class="button" onclick="showmap(3)">Winter 2017</button>
     
   <div class="mapid" id="mapid"></div>
   <div class="mapid" id="mapid2"></div>
   <div class="mapid" id="mapid3"></div>
+  <div class="mapid" id="mapid4"></div> 
       
   <script>
   
@@ -158,8 +163,9 @@
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap2);
       
-      L.geoJSON(lrt_tracks).addTo(mymap2);
-      L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap2);
+	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap2);
+    L.geoJSON(w19, {onEachFeature: bindPopupsComms}).addTo(mymap2);
+    L.geoJSON(lrt_tracks).addTo(mymap2);
 
 	
 
@@ -178,7 +184,31 @@
 }).addTo(mymap3);
       L.geoJSON(lrt_tracks).addTo(mymap3);
       L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap3);
+      
+    L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap3);
+    L.geoJSON(s17, {onEachFeature: bindPopupsComms}).addTo(mymap3);
+    L.geoJSON(lrt_tracks).addTo(mymap3);
+      
 
+//map 4 
+
+ var mymap4 = L.map('mapid4').setView([51.033838, -114.059372], 13);
+  
+  
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
+}).addTo(mymap4);
+
+      	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap4);
+    L.geoJSON(w17, {onEachFeature: bindPopupsComms}).addTo(mymap4);
+    L.geoJSON(lrt_tracks).addTo(mymap4);
+    
+      
 
 //show and hide maps
 function showmap(mapNum) {
