@@ -19,10 +19,6 @@
     <body>
      <div class="mapid" id="mapid" style="height: 100%; width: 100%;"></div>
         <script>
-  
-  function bindPopupsLRT(feature, layer) {
-				layer.bindPopup("<h4>"+feature.properties.STATIONNAM+"</h4>");
-		};
       	
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
@@ -37,8 +33,26 @@
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
   }).addTo(mymap);	
 
-	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
     L.geoJSON(lrt_tracks).addTo(mymap);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var lrtStations = JSON.parse(this.responseText);
+			addStationsToMap(lrtStations);
+		}
+	};
+	
+	xhr.open("GET", "https://data.calgary.ca/resource/2axz-xm4q.geojson?$select=*", "synch");
+	xhr.send();
+  
+	function bindStationPopups(feature, layer) {
+		layer.bindPopup(feature.properties.stationnam);
+	}
+      
+	function addStationsToMap(layer) {
+		L.geoJSON(layer, {onEachFeature: bindStationPopups}).addTo(mymap);
+	}
       
 //Chloropleth
       
