@@ -74,9 +74,6 @@
 				layer.bindPopup("<h3>"+feature.properties.STATIONNAM+"</h3>");
 		};
       
-       function bindPopupsComms(feature, layer) {
-		layer.bindPopup("<h3>"+feature.properties.name+"</h3>"+"Grand Theft Autos: "+feature.properties.theftOfVehicle+"<br>Total # of crimes: "+feature.properties.totalCrime);
-	}
 		
 		
   var mymap = L.map('mapid').setView([51.033838, -114.059372], 13);
@@ -92,27 +89,9 @@
   }).addTo(mymap);	
 
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap);
-    L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap);
     L.geoJSON(lrt_tracks).addTo(mymap);
       
-//info
-      	var info = L.control();
 
-	info.onAdd = function (mymap) {
-		this._div = L.DomUtil.create('div', 'info');
-		this.update();
-		return this._div;
-	};
-
-	info.update = function (props) {
-		this._div.innerHTML = '<h4>Calgary Crime Count</h4>' +  (props ?
-			'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-			: 'Hover over a community');
-	};
-
-	info.addTo(mymap);
-
-      //colours in chloropleth
       
     function getColor(d) {
     return d > 400 ? '#800026' :
@@ -135,12 +114,62 @@
         };
       }
 
-      L.geoJson(s19, {style: style}).addTo(mymap);
+    L.geoJson(s19, {style: style}).addTo(mymap);
       
-     
-      //interactions with hover 
+   //hightlight features 
+     function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+        
+    
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+          info.update(layer.feature.properties);
+}
       
+      function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+           info.update();
+}
       
+      function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+    });
+}
+
+geojson = L.geoJson(s19, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(mymap);
+      
+      //info control 
+      
+      var info = L.control();
+
+info.onAdd = function (mymap) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Calgary Crime Data</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + ' Total Crime: '+ props.totalCrime
+        : 'Hover over a community');
+};
+
+info.addTo(mymap);
       
       //map 1 legend
       var legend = L.control({position: 'bottomright'});
@@ -179,7 +208,6 @@
 }).addTo(mymap2);
       
 	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap2);
-    L.geoJSON(w19, {onEachFeature: bindPopupsComms}).addTo(mymap2);
     L.geoJSON(lrt_tracks).addTo(mymap2);
 
 	
@@ -198,11 +226,7 @@
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap3);
       L.geoJSON(lrt_tracks).addTo(mymap3);
-      L.geoJSON(s19, {onEachFeature: bindPopupsComms}).addTo(mymap3);
-      
     L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap3);
-    L.geoJSON(s17, {onEachFeature: bindPopupsComms}).addTo(mymap3);
-    L.geoJSON(lrt_tracks).addTo(mymap3);
       
 
 //map 4 
@@ -219,8 +243,7 @@
     accessToken: 'pk.eyJ1IjoibWFoc2FzaGF5YW5mYXIiLCJhIjoiY2tmbWR5dmhxMG83ajJxcHNsNXR6M3NieSJ9.QbKUzHSVoY0Rzuyhg2wxWw'
 }).addTo(mymap4);
 
-      	L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap4);
-    L.geoJSON(w17, {onEachFeature: bindPopupsComms}).addTo(mymap4);
+    L.geoJSON(lrt_stations, {onEachFeature: bindPopupsLRT}).addTo(mymap4);
     L.geoJSON(lrt_tracks).addTo(mymap4);
     
       
